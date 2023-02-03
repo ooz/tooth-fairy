@@ -48,4 +48,12 @@ export class Tooth {
             }
         }
     }
+
+    isPulled() {
+        let d = distance(this.startX, this.startY, this._sprite.x, this._sprite.y);
+        if (d > 30.0 || this._sprite.y < 0) {
+            return true;
+        }
+        return false;
+    }
 }
