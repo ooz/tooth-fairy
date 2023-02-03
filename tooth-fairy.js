@@ -49,6 +49,9 @@ function preload() {
     loadAsset(this, "tooth-10-transparent");
     loadAsset(this, "tooth-11-transparent");
     loadAsset(this, "tooth-12-transparent");
+
+    loadAsset(this, "croc-snapping-eyes-transparent");
+    loadAsset(this, "croc-snapping-blank-transparent");
 }
 
 function create() {
@@ -109,6 +112,27 @@ function gameOver(scene) {
     }
 
     console.log("Game over!");
+
+    let maw = scene.add.follower(null, 150, 0, "croc-snapping-blank-transparent");
+    let eyes = scene.add.follower(null, 150, 0, "croc-snapping-eyes-transparent");
+    maw.setPath(new Phaser.Curves.Path(maw.x, maw.y).lineTo(150, 360));
+    maw.startFollow({
+        positionOnPath: true,
+        duration: 600,
+        repeat: 0,
+        rotateToPath: false,
+        onComplete: () => { },
+        onUpdate: () => { }
+    });
+    eyes.setPath(new Phaser.Curves.Path(eyes.x, eyes.y).lineTo(150, 80));
+    eyes.startFollow({
+        positionOnPath: true,
+        duration: 600,
+        repeat: 0,
+        rotateToPath: false,
+        onComplete: () => { },
+        onUpdate: () => { }
+    });
 
     _gameState.gameOver = true;
 }
