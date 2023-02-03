@@ -1,6 +1,7 @@
 "use strict";
 
 import { loadAsset } from "./phaser-util.js";
+import { Tooth } from "./tfclasses.js";
 
 let config = {
     type: Phaser.AUTO,
@@ -23,35 +24,30 @@ let config = {
 
 let game = new Phaser.Game(config);
 
+let _gameState = {
+    teeth: []
+}
+
 function preload() {
+    loadAsset(this, "croc-mouth");
+    loadAsset(this, "croc-face-neutral-transparent");
+
     loadAsset(this, "tooth");
 }
 
-class Tooth {
-    constructor(scene, startX, startY) {
-        this._scene = scene;
-        this.startX = startX;
-        this.startY = startY;
-
-        let tooth = scene.add.sprite(startX, startY, "tooth").setInteractive();
-
-        scene.input.setDraggable(tooth);
-
-        scene.input.on('drag', function (pointer, gameObject, dragX, dragY) {
-            gameObject.x = dragX;
-            gameObject.y = dragY;
-        });
-    }
-}
-
 function create() {
-    let tooth1 = new Tooth(this, 30, 300)
-    let tooth2 = new Tooth(this, 30, 400)
-    let tooth3 = new Tooth(this, 30, 500)
+    this.add.image(150, 300, "croc-mouth");
+    this.add.image(150, 300, "croc-face-neutral-transparent");
+
+    _gameState.teeth.push(new Tooth(this, 30, 300));
+    _gameState.teeth.push(new Tooth(this, 30, 400));
+    _gameState.teeth.push(new Tooth(this, 30, 500));
 }
 
 function update(t, dt) {
-
+    for (let tooth of _gameState.teeth) {
+        //tooth.bounceBack();
+    }
 }
 
 function onDown() {
