@@ -7,7 +7,7 @@ let config = {
         fullscreenTarget: "game",
         mode: Phaser.Scale.FIT,
         width: 400,
-        height: 800
+        height: 600
     },
     render: {
         pixelArt: true
