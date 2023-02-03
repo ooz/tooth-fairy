@@ -31,6 +31,7 @@ let _gameState = {
 function preload() {
     loadAsset(this, "croc-mouth");
     loadAsset(this, "croc-face-neutral-transparent");
+    loadAsset(this, "croc-face-very-angry-transparent");
 
     loadAsset(this, "tooth");
 
@@ -64,6 +65,20 @@ function create() {
     _gameState.teeth.push(new Tooth(this, 290, 350, "tooth-10-transparent"));
     _gameState.teeth.push(new Tooth(this, 290, 430, "tooth-11-transparent"));
     _gameState.teeth.push(new Tooth(this, 290, 500, "tooth-12-transparent"));
+
+    this.input.on('dragstart', function (pointer, gameObject) {
+        gameObject._self.isDragged = true;
+    });
+
+    this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
+        gameObject.x = dragX;
+        gameObject.y = dragY;
+    });
+
+    this.input.on('dragend', function (pointer, gameObject) {
+        gameObject._self.isDragged = false;
+        gameObject._self.autoMove();
+    });
 }
 
 function update(t, dt) {
