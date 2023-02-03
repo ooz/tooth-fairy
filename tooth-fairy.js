@@ -36,8 +36,6 @@ function preload() {
     loadAsset(this, "croc-face-skeptical-transparent");
     loadAsset(this, "croc-face-very-angry-transparent");
 
-    loadAsset(this, "tooth");
-
     loadAsset(this, "tooth-01-transparent");
     loadAsset(this, "tooth-02-transparent");
     loadAsset(this, "tooth-03-transparent");
@@ -103,7 +101,6 @@ function update(t, dt) {
     } else {
         _gameState.crocHead.setTexture("croc-face-neutral-transparent");
     }
-    //console.log("pulled: " + pulledTeethCount)
 }
 
 function gameOver(scene) {
