@@ -32,6 +32,7 @@ let _gameState = {
 function preload() {
     loadAsset(this, "croc-mouth");
     loadAsset(this, "croc-face-neutral-transparent");
+    loadAsset(this, "croc-face-skeptical-transparent");
     loadAsset(this, "croc-face-very-angry-transparent");
 
     loadAsset(this, "tooth");
@@ -89,8 +90,10 @@ function update(t, dt) {
             pulledTeethCount += 1;
         }
     }
-    if (pulledTeethCount > 3) {
+    if (pulledTeethCount >= 4) {
         _gameState.crocHead.setTexture("croc-face-very-angry-transparent");
+    } else if (pulledTeethCount >= 2) {
+        _gameState.crocHead.setTexture("croc-face-skeptical-transparent");
     } else {
         _gameState.crocHead.setTexture("croc-face-neutral-transparent");
     }
