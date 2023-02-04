@@ -2,6 +2,8 @@
 
 GGJ23
 
+Inspired by "Hasbro Kroko Doc".
+
 ## Team
 
 * Markus
