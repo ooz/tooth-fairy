@@ -27,6 +27,7 @@ export class Tooth {
                 repeat: 0,
                 rotateToPath: false,
                 onComplete: () => {
+                    // Recreate sprite because it stops being draggable after path following
                     this._scene.input.setDraggable(this._sprite, false);
                     this._sprite.destroy();
                     this._sprite = this._scene.add.follower(null, this.startX, this.startY, this.image).setInteractive();
