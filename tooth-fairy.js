@@ -120,19 +120,15 @@ function create() {
         gameObject._self.isDragged = true;
         _gameState.timeWithoutAction = 0;
     });
-
     this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
         gameObject.x = dragX;
         gameObject.y = dragY;
         _gameState.timeWithoutAction = 0;
     });
-
     this.input.on('dragend', function (pointer, gameObject) {
         gameObject._self.isDragged = false;
         gameObject._self.autoMove();
     });
-
-    _gameState.playButton
 }
 
 function update(t, dt) {
