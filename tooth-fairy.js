@@ -36,6 +36,8 @@ function preload() {
     loadAsset(this, "croc-face-very-angry-transparent");
     loadAsset(this, "croc-face-blank");
     loadAsset(this, "croc-eyes-happy");
+    loadAsset(this, "croc-eyes-neutral");
+    loadAsset(this, "croc-eyes-skeptical");
     loadAsset(this, "croc-eyes-very-angry");
 
     loadAsset(this, "tooth-01-transparent");
@@ -69,6 +71,8 @@ let _gameState = {
     teeth: [],
     crocHead: null,
     happyEyes: null,
+    neutralEyes: null,
+    skepticalEyes: null,
     angryEyes: null,
     blush: null,
     gameOver: false,
@@ -83,7 +87,10 @@ let _gameState = {
 function create() {
     this.add.image(150, 300, "croc-mouth");
     _gameState.crocHead = this.add.image(150, 300, "croc-face-blank");
+
     _gameState.happyEyes = this.add.image(150, 41, "croc-eyes-happy").setVisible(false);
+    _gameState.neutralEyes = this.add.image(150, 48, "croc-eyes-neutral").setVisible(false);
+    _gameState.skepticalEyes = this.add.image(150, 38, "croc-eyes-skeptical").setVisible(false);
     _gameState.angryEyes = this.add.image(150, 64, "croc-eyes-very-angry").setVisible(false);
     _gameState.blush = this.add.image(150, 103, "blush-transparent").setVisible(false);
 
@@ -186,21 +193,21 @@ function updateCrocFace(scene) {
         gameOver(scene, true);
     } else if (_gameState.mood < -3) {
         gameOver(scene);
-    } else if (_gameState.mood == -2) {
+    } else {
         _gameState.crocHead.setTexture("croc-face-blank");
-    } else if (_gameState.mood == -1) {
-        _gameState.crocHead.setTexture("croc-face-skeptical-transparent");
-    } else if (_gameState.mood >= 1) {
-        _gameState.crocHead.setTexture("croc-face-blank");
-    } else if (_gameState.mood == 0) {
-        _gameState.crocHead.setTexture("croc-face-neutral-transparent");
-    }
+    } 
 
     let happy = _gameState.mood >= 1;
     _gameState.blush.setVisible(happy);
     _gameState.happyEyes.setVisible(happy);
 
-    let angry = _gameState.mood == -2;
+    let neutral = _gameState.mood == 0;
+    _gameState.neutralEyes.setVisible(neutral);
+
+    let skeptical = _gameState.mood == -1;
+    _gameState.skepticalEyes.setVisible(skeptical);
+
+    let angry = _gameState.mood <= -2 && _gameState.mood >= -3;
     _gameState.angryEyes.setVisible(angry);
 }
 
