@@ -63,7 +63,6 @@ function preload() {
 let _gameState = {
     playButton: null,
     paused: true,
-
     teeth: [],
     crocHead: null,
     blush: null,
