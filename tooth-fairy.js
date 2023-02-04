@@ -24,12 +24,6 @@ let config = {
 
 let game = new Phaser.Game(config);
 
-let _gameState = {
-    teeth: [],
-    crocHead: null,
-    gameOver: false
-}
-
 function preload() {
     loadAsset(this, "croc-mouth");
     loadAsset(this, "croc-face-neutral-transparent");
@@ -92,11 +86,17 @@ function update(t, dt) {
             pulledTeethCount += 1;
         }
     }
-    if (pulledTeethCount >= 6) {
-        gameOver(this);
-    } else if (pulledTeethCount >= 4) {
+    _gameState.pulledTeethCount = pulledTeethCount;
+
+    updateCrocFace(this);
+}
+
+function updateCrocFace(scene) {
+    if (_gameState.pulledTeethCount >= 6) {
+        gameOver(scene);
+    } else if (_gameState.pulledTeethCount >= 4) {
         _gameState.crocHead.setTexture("croc-face-very-angry-transparent");
-    } else if (pulledTeethCount >= 2) {
+    } else if (_gameState.pulledTeethCount >= 2) {
         _gameState.crocHead.setTexture("croc-face-skeptical-transparent");
     } else {
         _gameState.crocHead.setTexture("croc-face-neutral-transparent");
@@ -107,6 +107,8 @@ function gameOver(scene) {
     if (_gameState.gameOver) {
         return;
     }
+
+    _gameState.gameOver = true;
 
     console.log("Game over!");
 
@@ -130,8 +132,6 @@ function gameOver(scene) {
         onComplete: () => { },
         onUpdate: () => { }
     });
-
-    _gameState.gameOver = true;
 }
 
 function goFullscreen() {
