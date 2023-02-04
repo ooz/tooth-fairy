@@ -39,11 +39,11 @@ function preload() {
     loadAsset(this, "tooth-04-transparent");
     loadAsset(this, "tooth-05-transparent");
     loadAsset(this, "tooth-06-transparent");
+    loadAsset(this, "tooth-07-transparent");
     loadAsset(this, "tooth-08-transparent");
     loadAsset(this, "tooth-09-transparent");
     loadAsset(this, "tooth-10-transparent");
     loadAsset(this, "tooth-11-transparent");
-    loadAsset(this, "tooth-12-transparent");
 
     loadAsset(this, "croc-snapping-eyes-transparent");
     loadAsset(this, "croc-snapping-blank-transparent");
@@ -70,12 +70,12 @@ function create() {
     _gameState.teeth.push(new Tooth(this, 30, 600, "tooth-04-transparent"));
     _gameState.teeth.push(new Tooth(this, 120, 600, "tooth-05-transparent"));
     _gameState.teeth.push(new Tooth(this, 210, 600, "tooth-06-transparent"));
-    _gameState.teeth.push(new Tooth(this, 280, 580, "tooth-08-transparent"));
+    _gameState.teeth.push(new Tooth(this, 280, 580, "tooth-07-transparent"));
 
-    _gameState.teeth.push(new Tooth(this, 290, 260, "tooth-09-transparent"));
-    _gameState.teeth.push(new Tooth(this, 290, 350, "tooth-10-transparent"));
-    _gameState.teeth.push(new Tooth(this, 290, 430, "tooth-11-transparent"));
-    _gameState.teeth.push(new Tooth(this, 290, 500, "tooth-12-transparent"));
+    _gameState.teeth.push(new Tooth(this, 290, 260, "tooth-08-transparent"));
+    _gameState.teeth.push(new Tooth(this, 290, 350, "tooth-09-transparent"));
+    _gameState.teeth.push(new Tooth(this, 290, 430, "tooth-10-transparent"));
+    _gameState.teeth.push(new Tooth(this, 290, 500, "tooth-11-transparent"));
 
     this.input.on('dragstart', function (pointer, gameObject) {
         gameObject._self.isDragged = true;
