@@ -51,12 +51,17 @@ function preload() {
     loadAsset(this, "croc-eyes-very-angry-transparent"); // LOSE
     loadAsset(this, "croc-snapping-blank-transparent");
 
+    loadAsset(this, "play-button");
+
     this.load.audio("background-music", [
         "a/Glitter Blast.mp3"
     ]);
 }
 
 let _gameState = {
+    playButton: null,
+    paused: true,
+
     teeth: [],
     crocHead: null,
     gameOver: false,
@@ -69,6 +74,7 @@ let _gameState = {
 }
 
 function create() {
+
     this.add.image(150, 300, "croc-mouth");
     _gameState.crocHead = this.add.image(150, 300, "croc-face-neutral-transparent");
 
@@ -85,6 +91,18 @@ function create() {
     _gameState.teeth.push(new Tooth(this, 290, 350, "tooth-09-transparent"));
     _gameState.teeth.push(new Tooth(this, 290, 430, "tooth-10-transparent"));
     _gameState.teeth.push(new Tooth(this, 290, 500, "tooth-11-transparent"));
+
+    // add play button last, i.e. on top of everything
+    _gameState.playButton = this.add.sprite(150, 300, "play-button")
+        .on('pointerup', function() {
+            // move outside of the view volume to "disable" it
+            _gameState.playButton.x = 1000;
+            _gameState.paused = false;
+            if (!bgm.isPlaying) {
+                bgm.play();
+            }
+        })
+        .setInteractive();
 
     let bgm = this.sound.add('background-music', { loop: true });
 
@@ -111,10 +129,14 @@ function create() {
         gameObject._self.autoMove();
     });
 
-    bgm.play();
+    _gameState.playButton
 }
 
 function update(t, dt) {
+    if (_gameState.paused) {
+        return;
+    }
+
     _gameState.timeWithoutAction += dt;
     if (_gameState.timeWithoutAction >= 10000.0) {
         _gameState.mood -= 1;
