@@ -50,6 +50,10 @@ function preload() {
     loadAsset(this, "croc-snapping-eyes-transparent"); // WIN
     loadAsset(this, "croc-eyes-very-angry-transparent"); // LOSE
     loadAsset(this, "croc-snapping-blank-transparent");
+
+    this.load.audio("background-music", [
+        "a/Glitter Blast.mp3"
+    ]);
 }
 
 let _gameState = {
@@ -83,6 +87,8 @@ function create() {
     _gameState.teeth.push(new Tooth(this, 290, 430, "tooth-10-transparent"));
     _gameState.teeth.push(new Tooth(this, 290, 500, "tooth-11-transparent"));
 
+    let bgm = this.sound.add('background-music', { loop: true });
+
     for (let tooth of _gameState.teeth) {
         if (tooth.isFoul()) {
             _gameState.totalFoulTeeth += 1;
@@ -105,6 +111,8 @@ function create() {
         gameObject._self.isDragged = false;
         gameObject._self.autoMove(_gameState);
     });
+
+    bgm.play();
 }
 
 function update(t, dt) {
