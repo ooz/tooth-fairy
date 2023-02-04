@@ -1,6 +1,8 @@
-# Dragon Tooth Fairy
+# [Dragon Tooth Fairy](https://globalgamejam.org/2023/games/dragon-tooth-fairy-2)
 
-GGJ23
+GGJ2023
+
+Pull the dragon's teeth. Pulling _healthy_ teeth will make it angry, pulling rotten teeth will make it happier. If you anger it too much, you'll lose the game and maybe your fingers. If you manage to pull all the rotten teeth, you win.
 
 Inspired by "Hasbro Kroko Doc".
 
