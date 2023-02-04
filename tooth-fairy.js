@@ -50,6 +50,7 @@ function preload() {
     loadAsset(this, "croc-snapping-eyes-transparent"); // WIN
     loadAsset(this, "croc-eyes-very-angry-transparent"); // LOSE
     loadAsset(this, "croc-snapping-blank-transparent");
+    loadAsset(this, "blush-transparent");
 
     loadAsset(this, "play-button");
 
@@ -64,6 +65,7 @@ let _gameState = {
 
     teeth: [],
     crocHead: null,
+    blush: null,
     gameOver: false,
     mood: 0,
     pulledTeethCount: 0,
@@ -77,6 +79,7 @@ function create() {
 
     this.add.image(150, 300, "croc-mouth");
     _gameState.crocHead = this.add.image(150, 300, "croc-face-neutral-transparent");
+    _gameState.blush = this.add.image(150, 103, "blush-transparent").setVisible(false);
 
     _gameState.teeth.push(new Tooth(this, 10, 260, "tooth-01-transparent"));
     _gameState.teeth.push(new Tooth(this, 10, 360, "tooth-02-transparent"));
@@ -190,6 +193,9 @@ function updateCrocFace(scene) {
     } else if (_gameState.mood == 0) {
         _gameState.crocHead.setTexture("croc-face-neutral-transparent");
     }
+
+    let blush = _gameState.mood >= 1;
+    _gameState.blush.setVisible(blush);
 }
 
 function gameOver(scene, win=false) {
