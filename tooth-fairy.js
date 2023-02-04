@@ -47,7 +47,8 @@ function preload() {
     loadAsset(this, "tooth-10-transparent");
     loadAsset(this, "tooth-11-transparent");
 
-    loadAsset(this, "croc-snapping-eyes-transparent");
+    loadAsset(this, "croc-snapping-eyes-transparent"); // WIN
+    loadAsset(this, "croc-eyes-very-angry-transparent"); // LOSE
     loadAsset(this, "croc-snapping-blank-transparent");
 }
 
@@ -147,7 +148,9 @@ function updatePulledTeethAndMood() {
 }
 
 function updateCrocFace(scene) {
-    if (_gameState.mood < -3 || _gameState.pulledFoulCount == _gameState.totalFoulTeeth) {
+    if (_gameState.pulledFoulCount == _gameState.totalFoulTeeth) {
+        gameOver(scene, true);
+    } else if (_gameState.mood < -3) {
         gameOver(scene);
     } else if (_gameState.mood == -2) {
         _gameState.crocHead.setTexture("croc-face-very-angry-transparent");
@@ -160,7 +163,7 @@ function updateCrocFace(scene) {
     }
 }
 
-function gameOver(scene) {
+function gameOver(scene, win=false) {
     if (_gameState.gameOver) {
         return;
     }
@@ -170,7 +173,7 @@ function gameOver(scene) {
     console.log("Game over!");
 
     let maw = scene.add.follower(null, 150, 0, "croc-snapping-blank-transparent");
-    let eyes = scene.add.follower(null, 150, 0, "croc-snapping-eyes-transparent");
+    let eyes = scene.add.follower(null, 150, 0, win ? "croc-snapping-eyes-transparent" : "croc-eyes-very-angry-transparent");
     maw.setPath(new Phaser.Curves.Path(maw.x, maw.y).lineTo(150, 360));
     maw.startFollow({
         positionOnPath: true,
