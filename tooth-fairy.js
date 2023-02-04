@@ -113,13 +113,12 @@ function update(t, dt) {
         _gameState.timeWithoutAction = 0;
     }
 
-    updatePulledTeethCount();
-    //updateMood();
+    updatePulledTeethAndMood();
 
     updateCrocFace(this);
 }
 
-function updatePulledTeethCount() {
+function updatePulledTeethAndMood() {
     let pulledTeethCount = 0;
     let foulTeethPulled = 0;
     for (let tooth of _gameState.teeth) {
@@ -147,20 +146,8 @@ function updatePulledTeethCount() {
 
 }
 
-function updateMood() {
-    if (_gameState.pulledTeethCount >= 6) {
-        _gameState.mood = -10;
-    } else if (_gameState.pulledTeethCount >= 4) {
-        _gameState.mood = -2;
-    } else if (_gameState.pulledTeethCount >= 2) {
-        _gameState.mood = -1;
-    } else {
-        _gameState.mood = 0;
-    }
-}
-
 function updateCrocFace(scene) {
-    if (_gameState.mood < -3) {
+    if (_gameState.mood < -3 || _gameState.pulledFoulCount == _gameState.totalFoulTeeth) {
         gameOver(scene);
     } else if (_gameState.mood == -2) {
         _gameState.crocHead.setTexture("croc-face-very-angry-transparent");
