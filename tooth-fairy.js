@@ -206,8 +206,6 @@ function gameOver(scene, win=false) {
 
     _gameState.gameOver = true;
 
-    console.log("Game over!");
-
     let animDuration = 600;
 
     let maw = scene.add.follower(null, 150, 0, "croc-snapping-blank-transparent");
