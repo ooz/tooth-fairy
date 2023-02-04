@@ -3,8 +3,10 @@
 import { loadAsset } from "./phaser-util.js";
 import { Tooth } from "./tfclasses.js";
 
+const DEBUG = true;
 const WIDTH = 300;
 const HEIGHT = 600;
+const TOTAL_TEETH = 11;
 
 let config = {
     type: Phaser.AUTO,
@@ -55,8 +57,11 @@ let _gameState = {
     gameOver: false,
     mood: 0,
     pulledTeethCount: 0,
+    pulledFoulCount: 0,
     totalFoulTeeth: 0,
     timeWithoutAction: 0,
+    teethCount: TOTAL_TEETH,
+    eventQueue: [],
 }
 
 function create() {
@@ -77,6 +82,13 @@ function create() {
     _gameState.teeth.push(new Tooth(this, 290, 430, "tooth-10-transparent"));
     _gameState.teeth.push(new Tooth(this, 290, 500, "tooth-11-transparent"));
 
+    for (let tooth of _gameState.teeth) {
+        if (tooth.isFoul()) {
+            _gameState.totalFoulTeeth += 1;
+        }
+    }
+    if (DEBUG) { console.log("Foul teeth: " + _gameState.totalFoulTeeth) }
+
     this.input.on('dragstart', function (pointer, gameObject) {
         gameObject._self.isDragged = true;
         _gameState.timeWithoutAction = 0;
@@ -90,31 +102,49 @@ function create() {
 
     this.input.on('dragend', function (pointer, gameObject) {
         gameObject._self.isDragged = false;
-        gameObject._self.autoMove();
+        gameObject._self.autoMove(_gameState);
     });
 }
 
 function update(t, dt) {
     _gameState.timeWithoutAction += dt;
-    if (_gameState.timeWithoutAction >= 10.0) {
+    if (_gameState.timeWithoutAction >= 10000.0) {
         _gameState.mood -= 1;
         _gameState.timeWithoutAction = 0;
     }
 
     updatePulledTeethCount();
-    updateMood();
+    //updateMood();
 
     updateCrocFace(this);
 }
 
 function updatePulledTeethCount() {
     let pulledTeethCount = 0;
+    let foulTeethPulled = 0;
     for (let tooth of _gameState.teeth) {
         if (tooth.isPulled()) {
             pulledTeethCount += 1;
+            if (tooth.isFoul()) {
+                foulTeethPulled += 1;
+            }
         }
     }
-    _gameState.pulledTeethCount = pulledTeethCount;
+
+    if (_gameState.pulledTeethCount != pulledTeethCount) {
+        if (_gameState.pulledTeethCount < pulledTeethCount) {
+            if (foulTeethPulled > _gameState.pulledFoulCount) {
+                _gameState.mood += 1;
+            } else {
+                _gameState.mood -= 1;
+            }
+        }
+
+        _gameState.pulledTeethCount = pulledTeethCount;
+        _gameState.pulledFoulCount = foulTeethPulled;
+        if (DEBUG) { console.log("Pulled: " + _gameState.pulledTeethCount + ", foul pulled: " + _gameState.pulledFoulCount + "/" + _gameState.totalFoulTeeth + ", mood: " + _gameState.mood) }
+    }
+
 }
 
 function updateMood() {
@@ -130,15 +160,15 @@ function updateMood() {
 }
 
 function updateCrocFace(scene) {
-    if (_gameState.mood < -2) {
+    if (_gameState.mood < -3) {
         gameOver(scene);
     } else if (_gameState.mood == -2) {
         _gameState.crocHead.setTexture("croc-face-very-angry-transparent");
     } else if (_gameState.mood == -1) {
         _gameState.crocHead.setTexture("croc-face-skeptical-transparent");
-    } else if (_gameState.mood == 1) {
+    } else if (_gameState.mood >= 1) {
         _gameState.crocHead.setTexture("croc-face-happy-transparent");
-    } else {
+    } else if (_gameState.mood == 0) {
         _gameState.crocHead.setTexture("croc-face-neutral-transparent");
     }
 }
