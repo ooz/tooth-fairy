@@ -2,28 +2,6 @@
 
 import { distance, random } from "./phaser-util.js";
 
-export class TFEvent {
-    constructor() { }
-    getType() {}
-    execute() {}
-}
-export class ToothPlanted extends TFEvent {
-    constructor(gameState) {
-        super();
-        this.gameState = gameState;
-    }
-    getType() { return "ToothPlanted" }
-}
-export class ToothGone extends TFEvent {
-    getType() { return "ToothGone" }
-}
-export class ToothNicePulled extends TFEvent {
-    getType() { return "ToothNicePulled" }
-}
-export class ToothFoulPulled extends TFEvent {
-    getType() { return "ToothFoulPulled" }
-}
-
 export class Tooth {
     constructor(scene, startX, startY, image="tooth") {
         this._scene = scene;
@@ -39,7 +17,7 @@ export class Tooth {
         this._isFoul = !!random(0, 1);
     }
 
-    autoMove(gameState) {
+    autoMove() {
         let d = distance(this.startX, this.startY, this._sprite.x, this._sprite.y);
         if (d <= 30.0) {
             this._sprite.setPath(new Phaser.Curves.Path(this._sprite.x, this._sprite.y).lineTo(this.startX, this.startY));
@@ -55,7 +33,6 @@ export class Tooth {
                     this._sprite = this._scene.add.follower(null, this.startX, this.startY, this.image).setInteractive();
                     this._scene.input.setDraggable(this._sprite);
                     this._sprite._self = this;
-                    gameState.eventQueue.push(new ToothPlanted());
                 },
                 onUpdate: () => { }
             });
@@ -70,7 +47,6 @@ export class Tooth {
                     onComplete: () => { },
                     onUpdate: () => { }
                 });
-                gameState.eventQueue.push(new ToothGone());
             }
         }
     }

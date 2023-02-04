@@ -66,7 +66,6 @@ let _gameState = {
     totalFoulTeeth: 0,
     timeWithoutAction: 0,
     teethCount: TOTAL_TEETH,
-    eventQueue: [],
 }
 
 function create() {
@@ -109,7 +108,7 @@ function create() {
 
     this.input.on('dragend', function (pointer, gameObject) {
         gameObject._self.isDragged = false;
-        gameObject._self.autoMove(_gameState);
+        gameObject._self.autoMove();
     });
 
     bgm.play();
