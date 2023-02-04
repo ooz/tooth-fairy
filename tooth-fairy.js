@@ -3,14 +3,17 @@
 import { loadAsset } from "./phaser-util.js";
 import { Tooth } from "./tfclasses.js";
 
+const WIDTH = 300;
+const HEIGHT = 600;
+
 let config = {
     type: Phaser.AUTO,
     scale: {
         parent: "game",
         fullscreenTarget: "game",
         mode: Phaser.Scale.FIT,
-        width: 300,
-        height: 600
+        width: WIDTH,
+        height: HEIGHT
     },
     render: {
         pixelArt: true
@@ -21,7 +24,6 @@ let config = {
         update: update
     }
 };
-
 let game = new Phaser.Game(config);
 
 function preload() {
@@ -44,6 +46,14 @@ function preload() {
 
     loadAsset(this, "croc-snapping-eyes-transparent");
     loadAsset(this, "croc-snapping-blank-transparent");
+}
+
+let _gameState = {
+    teeth: [],
+    crocHead: null,
+    gameOver: false,
+    pulledTeethCount: 0,
+    totalFoulTeeth: 0,
 }
 
 function create() {
@@ -133,6 +143,18 @@ function gameOver(scene) {
         onUpdate: () => { }
     });
 }
+
+// Fullscreen
+game.scale.on(Phaser.Scale.Events.LEAVE_FULLSCREEN, () => {
+    game.scale.scaleMode = Phaser.Scale.NONE;
+    game.scale.resize(WIDTH, HEIGHT);
+    game.scale.setZoom(1);
+});
+
+game.scale.on(Phaser.Scale.Events.ENTER_FULLSCREEN, () => {
+    game.scale.scaleMode = Phaser.Scale.FIT;
+    game.scale.setGameSize(WIDTH, HEIGHT);
+});
 
 function goFullscreen() {
     if (!game.scale.isFullscreen) {

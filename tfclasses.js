@@ -1,6 +1,6 @@
 "use strict";
 
-import { distance } from "./phaser-util.js";
+import { distance, random } from "./phaser-util.js";
 
 export class Tooth {
     constructor(scene, startX, startY, image="tooth") {
@@ -13,11 +13,12 @@ export class Tooth {
         this._sprite = scene.add.follower(null, startX, startY, image).setInteractive();
         scene.input.setDraggable(this._sprite);
         this._sprite._self = this;
+
+        this._isFoul = !!random(0, 1);
     }
 
     autoMove() {
         let d = distance(this.startX, this.startY, this._sprite.x, this._sprite.y);
-        //console.log("Distance: " + d);
         if (d <= 30.0) {
             this._sprite.setPath(new Phaser.Curves.Path(this._sprite.x, this._sprite.y).lineTo(this.startX, this.startY));
             this._sprite.startFollow({
@@ -55,5 +56,9 @@ export class Tooth {
             return true;
         }
         return false;
+    }
+
+    isFoul() {
+        return this._isFoul;
     }
 }
