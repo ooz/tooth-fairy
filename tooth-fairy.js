@@ -34,6 +34,9 @@ function preload() {
     loadAsset(this, "croc-face-neutral-transparent");
     loadAsset(this, "croc-face-skeptical-transparent");
     loadAsset(this, "croc-face-very-angry-transparent");
+    loadAsset(this, "croc-face-blank");
+    loadAsset(this, "croc-eyes-happy");
+    loadAsset(this, "croc-eyes-very-angry");
 
     loadAsset(this, "tooth-01-transparent");
     loadAsset(this, "tooth-02-transparent");
@@ -65,6 +68,8 @@ let _gameState = {
     paused: true,
     teeth: [],
     crocHead: null,
+    happyEyes: null,
+    angryEyes: null,
     blush: null,
     gameOver: false,
     mood: 0,
@@ -76,9 +81,10 @@ let _gameState = {
 }
 
 function create() {
-
     this.add.image(150, 300, "croc-mouth");
-    _gameState.crocHead = this.add.image(150, 300, "croc-face-neutral-transparent");
+    _gameState.crocHead = this.add.image(150, 300, "croc-face-blank");
+    _gameState.happyEyes = this.add.image(150, 41, "croc-eyes-happy").setVisible(false);
+    _gameState.angryEyes = this.add.image(150, 64, "croc-eyes-very-angry").setVisible(false);
     _gameState.blush = this.add.image(150, 103, "blush-transparent").setVisible(false);
 
     _gameState.teeth.push(new Tooth(this, 10, 260, "tooth-01-transparent"));
@@ -181,17 +187,21 @@ function updateCrocFace(scene) {
     } else if (_gameState.mood < -3) {
         gameOver(scene);
     } else if (_gameState.mood == -2) {
-        _gameState.crocHead.setTexture("croc-face-very-angry-transparent");
+        _gameState.crocHead.setTexture("croc-face-blank");
     } else if (_gameState.mood == -1) {
         _gameState.crocHead.setTexture("croc-face-skeptical-transparent");
     } else if (_gameState.mood >= 1) {
-        _gameState.crocHead.setTexture("croc-face-happy-transparent");
+        _gameState.crocHead.setTexture("croc-face-blank");
     } else if (_gameState.mood == 0) {
         _gameState.crocHead.setTexture("croc-face-neutral-transparent");
     }
 
-    let blush = _gameState.mood >= 1;
-    _gameState.blush.setVisible(blush);
+    let happy = _gameState.mood >= 1;
+    _gameState.blush.setVisible(happy);
+    _gameState.happyEyes.setVisible(happy);
+
+    let angry = _gameState.mood == -2;
+    _gameState.angryEyes.setVisible(angry);
 }
 
 function gameOver(scene, win=false) {
