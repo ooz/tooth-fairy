@@ -51,6 +51,7 @@ function preload() {
     loadAsset(this, "croc-eyes-very-angry-transparent"); // LOSE
     loadAsset(this, "croc-snapping-blank-transparent");
     loadAsset(this, "blush-transparent");
+    loadAsset(this, "angry-veins");
 
     loadAsset(this, "play-button");
 
@@ -207,21 +208,36 @@ function gameOver(scene, win=false) {
 
     console.log("Game over!");
 
+    let animDuration = 600;
+
     let maw = scene.add.follower(null, 150, 0, "croc-snapping-blank-transparent");
+    if (!win) {
+        let veinsX = 100
+        let veins = scene.add.follower(null, veinsX, -100, "angry-veins");
+        veins.setPath(new Phaser.Curves.Path(veins.x, veins.y).lineTo(veinsX, 60));
+        veins.startFollow({
+            positionOnPath: true,
+            duration: animDuration,
+            repeat: 0,
+            rotateToPath: false,
+            onComplete: () => { },
+            onUpdate: () => { }
+        });
+    }
     let eyes = scene.add.follower(null, 150, 0, win ? "croc-snapping-eyes-transparent" : "croc-eyes-very-angry-transparent");
     maw.setPath(new Phaser.Curves.Path(maw.x, maw.y).lineTo(150, 360));
     maw.startFollow({
         positionOnPath: true,
-        duration: 600,
+        duration: animDuration,
         repeat: 0,
         rotateToPath: false,
         onComplete: () => { },
         onUpdate: () => { }
     });
-    eyes.setPath(new Phaser.Curves.Path(eyes.x, eyes.y).lineTo(150, 80));
+    eyes.setPath(new Phaser.Curves.Path(eyes.x, eyes.y).lineTo(150, 175));
     eyes.startFollow({
         positionOnPath: true,
-        duration: 600,
+        duration: animDuration,
         repeat: 0,
         rotateToPath: false,
         onComplete: () => { },
