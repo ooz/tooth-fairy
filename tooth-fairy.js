@@ -28,6 +28,7 @@ let game = new Phaser.Game(config);
 
 function preload() {
     loadAsset(this, "croc-mouth");
+    loadAsset(this, "croc-face-happy-transparent");
     loadAsset(this, "croc-face-neutral-transparent");
     loadAsset(this, "croc-face-skeptical-transparent");
     loadAsset(this, "croc-face-very-angry-transparent");
@@ -52,8 +53,10 @@ let _gameState = {
     teeth: [],
     crocHead: null,
     gameOver: false,
+    mood: 0,
     pulledTeethCount: 0,
     totalFoulTeeth: 0,
+    timeWithoutAction: 0,
 }
 
 function create() {
@@ -76,11 +79,13 @@ function create() {
 
     this.input.on('dragstart', function (pointer, gameObject) {
         gameObject._self.isDragged = true;
+        _gameState.timeWithoutAction = 0;
     });
 
     this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
         gameObject.x = dragX;
         gameObject.y = dragY;
+        _gameState.timeWithoutAction = 0;
     });
 
     this.input.on('dragend', function (pointer, gameObject) {
@@ -90,24 +95,49 @@ function create() {
 }
 
 function update(t, dt) {
-    let pulledTeethCount = 0;
-    for (let tooth of _gameState.teeth) {
-        if(tooth.isPulled()) {
-            pulledTeethCount += 1;
-        }
+    _gameState.timeWithoutAction += dt;
+    if (_gameState.timeWithoutAction >= 10.0) {
+        _gameState.mood -= 1;
+        _gameState.timeWithoutAction = 0;
     }
-    _gameState.pulledTeethCount = pulledTeethCount;
+
+    updatePulledTeethCount();
+    updateMood();
 
     updateCrocFace(this);
 }
 
-function updateCrocFace(scene) {
+function updatePulledTeethCount() {
+    let pulledTeethCount = 0;
+    for (let tooth of _gameState.teeth) {
+        if (tooth.isPulled()) {
+            pulledTeethCount += 1;
+        }
+    }
+    _gameState.pulledTeethCount = pulledTeethCount;
+}
+
+function updateMood() {
     if (_gameState.pulledTeethCount >= 6) {
-        gameOver(scene);
+        _gameState.mood = -10;
     } else if (_gameState.pulledTeethCount >= 4) {
-        _gameState.crocHead.setTexture("croc-face-very-angry-transparent");
+        _gameState.mood = -2;
     } else if (_gameState.pulledTeethCount >= 2) {
+        _gameState.mood = -1;
+    } else {
+        _gameState.mood = 0;
+    }
+}
+
+function updateCrocFace(scene) {
+    if (_gameState.mood < -2) {
+        gameOver(scene);
+    } else if (_gameState.mood == -2) {
+        _gameState.crocHead.setTexture("croc-face-very-angry-transparent");
+    } else if (_gameState.mood == -1) {
         _gameState.crocHead.setTexture("croc-face-skeptical-transparent");
+    } else if (_gameState.mood == 1) {
+        _gameState.crocHead.setTexture("croc-face-happy-transparent");
     } else {
         _gameState.crocHead.setTexture("croc-face-neutral-transparent");
     }
