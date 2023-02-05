@@ -164,6 +164,18 @@ function create() {
         gameObject._self.isDragged = false;
         gameObject._self.autoMove();
     });
+
+    if (gyro.hasFeature('devicemotion')) {
+        gyro.frequency = 50; // ms
+        gyro.startTracking(_onGyro);
+    }
+}
+
+function _onGyro(o) {
+    let magnitude = Math.sqrt(o.x * o.x + o.y * o.y + o.z * o.z);
+    if (magnitude >= 18.0) {
+        _gameState.mood += 1;
+    }
 }
 
 function update(t, dt) {
