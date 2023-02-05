@@ -91,6 +91,7 @@ let _gameState = {
     },
 }
 
+let gyroMagnitude = 0.0;
 function create() {
     this.add.image(150, 300, "croc-mouth");
     _gameState.crocHead = this.add.image(150, 300, "croc-face-blank");
@@ -173,8 +174,10 @@ function create() {
 
 function _onGyro(o) {
     let magnitude = Math.sqrt(o.x * o.x + o.y * o.y + o.z * o.z);
-    if (magnitude >= 18.0) {
+    gyroMagnitude = Math.max(magnitude, gyroMagnitude);
+    if (gyroMagnitude >= 18.0) {
         _gameState.mood += 1;
+        gyroMagnitude = 0.0;
     }
 }
 
