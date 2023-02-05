@@ -109,7 +109,7 @@ function create() {
       //angle: {min: -85, max: -95},
       rotate: {min: -50, max: 50},
       lifespan: {min: 1000, max: 1500},
-      active: false,
+      on: false,
     };
     let particles = this.add.particles("smoke");
     _gameState.smokeEmitters.left = particles.createEmitter({...emitterConfig, x: 115, y: 87});
@@ -238,9 +238,13 @@ function updateCrocFace(scene) {
     _gameState.angryEyes.setVisible(angry);
 
     let veryAngry = _gameState.mood == -3;
-    _gameState.smokeEmitters.left.active = veryAngry;
-    _gameState.smokeEmitters.right.active = veryAngry;
-
+    if (veryAngry) {
+        _gameState.smokeEmitters.left.start();
+        _gameState.smokeEmitters.right.start();
+    } else {
+        _gameState.smokeEmitters.left.stop();
+        _gameState.smokeEmitters.right.stop();
+    }
 }
 
 function gameOver(scene, win=false) {
