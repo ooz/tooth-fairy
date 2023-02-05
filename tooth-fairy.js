@@ -175,7 +175,7 @@ function create() {
 function _onGyro(o) {
     let magnitude = Math.sqrt(o.x * o.x + o.y * o.y + o.z * o.z);
     gyroMagnitude = Math.max(magnitude, gyroMagnitude);
-    if (gyroMagnitude >= 18.0) {
+    if (gyroMagnitude >= 20.0) {
         _gameState.mood += 1;
         gyroMagnitude = 0.0;
     }
