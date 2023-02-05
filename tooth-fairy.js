@@ -3,7 +3,7 @@
 import { loadAsset } from "./phaser-util.js";
 import { Tooth } from "./tfclasses.js";
 
-const DEBUG = true;
+const DEBUG = false;
 const WIDTH = 300;
 const HEIGHT = 600;
 const TOTAL_TEETH = 11;
@@ -195,7 +195,7 @@ function updateCrocFace(scene) {
         gameOver(scene);
     } else {
         _gameState.crocHead.setTexture("croc-face-blank");
-    } 
+    }
 
     let happy = _gameState.mood >= 1;
     _gameState.blush.setVisible(happy);
