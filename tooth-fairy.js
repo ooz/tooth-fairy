@@ -57,6 +57,8 @@ function preload() {
     loadAsset(this, "croc-snapping-blank-transparent");
     loadAsset(this, "blush-transparent");
     loadAsset(this, "angry-veins");
+    loadAsset(this, "smoke");
+    loadAsset(this, "fire");
 
     loadAsset(this, "play-button");
 
@@ -82,6 +84,10 @@ let _gameState = {
     totalFoulTeeth: 0,
     timeWithoutAction: 0,
     teethCount: TOTAL_TEETH,
+    smokeEmitters: {
+        left: null,
+        right: null,
+    },
 }
 
 function create() {
@@ -93,6 +99,21 @@ function create() {
     _gameState.skepticalEyes = this.add.image(150, 38, "croc-eyes-skeptical").setVisible(false);
     _gameState.angryEyes = this.add.image(150, 64, "croc-eyes-very-angry").setVisible(false);
     _gameState.blush = this.add.image(150, 103, "blush-transparent").setVisible(false);
+
+    let emitterConfig = {
+      frequency: 0.1,
+      speedY: -10,
+      //alpha: 1,
+      scale: {start: 0.7, end: 1.5},
+      accelerationY: -50,
+      //angle: {min: -85, max: -95},
+      rotate: {min: -50, max: 50},
+      lifespan: {min: 1000, max: 1500},
+      active: false,
+    };
+    let particles = this.add.particles("smoke");
+    _gameState.smokeEmitters.left = particles.createEmitter({...emitterConfig, x: 115, y: 87});
+    _gameState.smokeEmitters.right = particles.createEmitter({...emitterConfig, x: 195, y: 87});
 
     _gameState.teeth.push(new Tooth(this, 10, 260, "tooth-01-transparent"));
     _gameState.teeth.push(new Tooth(this, 10, 360, "tooth-02-transparent"));
@@ -209,6 +230,11 @@ function updateCrocFace(scene) {
 
     let angry = _gameState.mood <= -2 && _gameState.mood >= -3;
     _gameState.angryEyes.setVisible(angry);
+
+    let veryAngry = _gameState.mood == -3;
+    _gameState.smokeEmitters.left.active = veryAngry;
+    _gameState.smokeEmitters.right.active = veryAngry;
+
 }
 
 function gameOver(scene, win=false) {
@@ -241,7 +267,7 @@ function gameOver(scene, win=false) {
         duration: animDuration,
         repeat: 0,
         rotateToPath: false,
-        onComplete: () => { },
+        onComplete: () => { if (!win) burn(scene) },
         onUpdate: () => { }
     });
     eyes.setPath(new Phaser.Curves.Path(eyes.x, eyes.y).lineTo(150, 175));
@@ -252,6 +278,20 @@ function gameOver(scene, win=false) {
         rotateToPath: false,
         onComplete: () => { },
         onUpdate: () => { }
+    });
+}
+
+function burn(scene) {
+    let particles = scene.add.particles("fire");
+    particles.createEmitter({
+      x: 150, y: 800,
+      speedY: -400,
+      frequency: 10,
+      accelerationY: -100,
+      //blendMode: "ADD",
+      scale: 10,
+      lifespan: 10000,
+      rotate: { min: -100, max: 100},
     });
 }
 
