@@ -207,6 +207,10 @@ function updatePulledTeethAndMood() {
         if (DEBUG) { console.log("Pulled: " + _gameState.pulledTeethCount + ", foul pulled: " + _gameState.pulledFoulCount + "/" + _gameState.totalFoulTeeth + ", mood: " + _gameState.mood) }
     }
 
+    // Cap positive mood at 2
+    if (_gameState.mood > 2) {
+        _gameState.mood = 2;
+    }
 }
 
 function updateCrocFace(scene) {
@@ -218,8 +222,10 @@ function updateCrocFace(scene) {
         _gameState.crocHead.setTexture("croc-face-blank");
     }
 
+    let veryHappy = _gameState.mood >= 2;
+    _gameState.blush.setVisible(veryHappy);
+
     let happy = _gameState.mood >= 1;
-    _gameState.blush.setVisible(happy);
     _gameState.happyEyes.setVisible(happy);
 
     let neutral = _gameState.mood == 0;
