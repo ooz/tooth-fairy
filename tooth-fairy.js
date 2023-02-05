@@ -171,7 +171,8 @@ function update(t, dt) {
     }
 
     _gameState.timeWithoutAction += dt;
-    if (_gameState.timeWithoutAction >= 10000.0) {
+    // 8s without action reduce mood
+    if (_gameState.timeWithoutAction >= 8000.0) {
         _gameState.mood -= 1;
         _gameState.timeWithoutAction = 0;
     }
