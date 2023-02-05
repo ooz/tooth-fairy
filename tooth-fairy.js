@@ -59,6 +59,7 @@ function preload() {
     loadAsset(this, "angry-veins");
     loadAsset(this, "smoke");
     loadAsset(this, "fire");
+    loadAsset(this, "fairy");
 
     loadAsset(this, "play-button");
 
@@ -278,7 +279,7 @@ function gameOver(scene, win=false) {
         duration: animDuration,
         repeat: 0,
         rotateToPath: false,
-        onComplete: () => { if (!win) burn(scene) },
+        onComplete: () => { if (true) fairy(scene); else burn(scene); },
         onUpdate: () => { }
     });
     eyes.setPath(new Phaser.Curves.Path(eyes.x, eyes.y).lineTo(150, 175));
@@ -303,6 +304,19 @@ function burn(scene) {
       scale: 10,
       lifespan: 10000,
       rotate: { min: -100, max: 100},
+    });
+}
+
+function fairy(scene) {
+    let toothfairy = scene.add.follower(null, 150, 700, "fairy");
+    toothfairy.setPath(new Phaser.Curves.Path(150, 700).lineTo(100, 400).lineTo(200, 200).lineTo(150, 80));
+    toothfairy.startFollow({
+        positionOnPath: true,
+        duration: 1500,
+        repeat: 0,
+        rotateToPath: false,
+        onComplete: () => { },
+        onUpdate: () => { }
     });
 }
 
