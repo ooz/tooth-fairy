@@ -279,7 +279,7 @@ function gameOver(scene, win=false) {
         duration: animDuration,
         repeat: 0,
         rotateToPath: false,
-        onComplete: () => { if (true) fairy(scene); else burn(scene); },
+        onComplete: () => { if (win) fairy(scene); else burn(scene); },
         onUpdate: () => { }
     });
     eyes.setPath(new Phaser.Curves.Path(eyes.x, eyes.y).lineTo(150, 175));
